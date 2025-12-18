@@ -3,8 +3,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 
-console.log("Iniciando Treadmill Master Pro...");
-
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = createRoot(rootElement);
@@ -13,6 +11,4 @@ if (rootElement) {
       <App />
     </React.StrictMode>
   );
-} else {
-  console.error("No se encontró el elemento #root");
 }
