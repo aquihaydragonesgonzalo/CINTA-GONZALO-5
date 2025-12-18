@@ -23,17 +23,19 @@ const NumberInput: React.FC<NumberInputProps> = ({
   const [inputValue, setInputValue] = useState<string>(value.toString());
 
   useEffect(() => {
-    setInputValue(value.toString());
+    // Solo actualizar si el valor externo cambia y no coincide con el interno actual
+    if (parseFloat(inputValue) !== value) {
+      setInputValue(value.toString());
+    }
   }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInputValue(val);
     
-    if (val === '') {
-       // Allow clearing the input entirely for better UX
-       return;
-    }
+    // Si el campo está vacío, no disparamos el onChange numérico todavía
+    // para permitir que el usuario borre todo.
+    if (val === '') return;
 
     const numeric = parseFloat(val);
     if (!isNaN(numeric)) {
@@ -44,22 +46,29 @@ const NumberInput: React.FC<NumberInputProps> = ({
   };
 
   const handleBlur = () => {
+    // Al perder el foco, si está vacío reseteamos al mínimo
     if (inputValue === '' || isNaN(parseFloat(inputValue))) {
       setInputValue(min.toString());
       onChange(min);
+    } else {
+      // Aseguramos que el valor esté dentro de los límites
+      const numeric = parseFloat(inputValue);
+      if (numeric > max) setInputValue(max.toString());
+      else if (numeric < min) setInputValue(min.toString());
     }
   };
 
   return (
     <div className={`flex flex-col ${className}`}>
-      {label && <label className="text-xs text-slate-400 mb-1">{label}</label>}
+      {label && <label className="text-[10px] text-slate-500 mb-1 font-black uppercase tracking-tighter">{label}</label>}
       <input
         type="number"
         value={inputValue}
         onChange={handleChange}
         onBlur={handleBlur}
         step={step}
-        className="bg-slate-800 text-white px-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full text-center text-lg font-bold"
+        className="bg-slate-950 text-white px-2 py-3 rounded-xl border border-slate-700/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full text-center text-xl font-black font-mono transition-all"
+        placeholder="0"
       />
     </div>
   );

@@ -1,5 +1,5 @@
 
-import { Session, Segment } from './types';
+import { Session, Segment } from './types.ts';
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
@@ -16,7 +16,7 @@ export const DEFAULT_SESSIONS: Session[] = [
       { id: generateId(), durationInSeconds: 1 * 60, speed: 4.5, incline: 13 },
       { id: generateId(), durationInSeconds: 1 * 60, speed: 4.5, incline: 14 },
       { id: generateId(), durationInSeconds: 1 * 60, speed: 4.5, incline: 15 },
-      // Tramo 9-17 (30s each, Speed 4, Incline 14 down to 6)
+      // Tramos 9 al 17 (30s cada uno, Velocidad 4, Inclinación bajando de 14 a 6)
       ...Array.from({ length: 9 }, (_, i) => ({
         id: generateId(),
         durationInSeconds: 30,
